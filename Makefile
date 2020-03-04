@@ -1,21 +1,32 @@
-GO ?= go
-GOFMT ?= gofmt "-s"
-SWAGGER ?= ~/go/bin/swag
+GO ?= $(shell which go)
+GOFMT := $(shell which gofmt) "-s"
+SWAGGER ?= ${GOPATH}/bin/swag
 PACKAGES ?= $(shell $(GO) list ./...)
 GOFILES := $(shell find . -name "*.go" -type f)
 TESTFOLDER := $(shell $(GO) list ./... | grep -v test)
 
-all: swag test build
+all: swag test build_linux build_windows
 
 .PHONY: install
 install: deps
 	$(GO) install ./cmd/london
 	$(GO) install ./cmd/manchester
 
-.PHONY: build
-build: deps
-	$(GO) build ./cmd/london-server
-	$(GO) build ./cmd/manchester-server
+.PHONY: build_linux
+build_linux: deps
+	env GOOS=linux GOARCH=amd64 $(GO) build -o ./build/linux64/london-server --tags "linux" -a -tags netgo -ldflags '-w -extldflags "-static"' ./cmd/london-server
+	env GOOS=linux GOARCH=amd64 $(GO) build -o ./build/linux64/manchester-server --tags "linux" -a -tags netgo -ldflags '-w -extldflags "-static"' ./cmd/manchester-server
+
+.PHONY: build_windows
+build_windows: deps
+	@hash gcc-multilib > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		echo "Install gcc-multilib before running this!"; \
+	fi
+	@hash gcc-mingw-w64 > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		echo "Install gcc-mingw-w64 before running this!"; \
+	fi
+	env CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ GOOS=windows GOARCH=amd64 $(GO) build -o ./build/win64/london-server.exe ./cmd/london-server
+	env CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ GOOS=windows GOARCH=amd64 $(GO) build -o ./build/win64/manchester-server.exe ./cmd/manchester-server
 
 .PHONY: swag
 swag: deps

@@ -9,6 +9,7 @@ coverage.out
 tmp.out
 
 /docs
+/build
 
 ./london-server*
 ./manchester-server*

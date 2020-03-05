@@ -1,6 +1,7 @@
 GO ?= $(shell which go)
 GOFMT := $(shell which gofmt) "-s"
 SWAGGER ?= ${GOPATH}/bin/swag
+GOLINT ?= ${GOPATH}/bin/golint
 PACKAGES ?= $(shell $(GO) list ./...)
 GOFILES := $(shell find . -name "*.go" -type f)
 TESTFOLDER := $(shell $(GO) list ./... | grep -v test)
@@ -75,7 +76,7 @@ lint:
 	@hash golint > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
 		$(GO) get -u golang.org/x/lint/golint; \
 	fi
-	for PKG in $(PACKAGES); do golint -set_exit_status $$PKG || exit 1; done;
+	for PKG in $(PACKAGES); do $(GOLINT) -set_exit_status $$PKG || exit 1; done;
 
 .PHONY: deps
 deps:

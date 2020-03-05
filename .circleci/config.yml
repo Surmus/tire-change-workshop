@@ -75,13 +75,7 @@ workflows:
   version: 2
   main:
     jobs:
-      - build:
-          filters:
-            branches:
-              ignore:
-                - master
-            tags:
-              only: /^v.*/
+      - build
       - publish_github-release:
           requires:
             - build

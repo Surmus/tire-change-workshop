@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// ginRusMiddleware returns a gin.HandlerFunc (middleware) that logs requests using logrus.
+// GinRusMiddleware returns a gin.HandlerFunc (middleware) that logs requests using logrus.
 //
 // Requests with errors are logged using logrus.Error().
 // Requests without errors are logged using logrus.Info().

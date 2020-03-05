@@ -13,6 +13,8 @@ import (
 
 var db *gorm.DB
 
+// Init initializes manchester application context by setting up database and registering REST endpoints,
+// returns Gin Router instance with registered endpoints
 func Init() *gin.Engine {
 	db = initDB()
 	repository := newTireChangeTimeRepository(db)

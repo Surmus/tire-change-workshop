@@ -54,7 +54,7 @@ $ ./london-server help
      london-server [global options] command [command options] [arguments...]
   
   VERSION:
-     v1.0.0
+     v1.0.1
   
   COMMANDS:
      help, h  Shows a list of commands or help for one command
@@ -73,7 +73,7 @@ USAGE:
    manchester-server [global options] command [command options] [arguments...]
 
 VERSION:
-   v1.0.0
+   v1.0.1
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command

@@ -24,8 +24,8 @@ Choose one of the following options:
      manchester-server.exe
      ```
 3. Applications should be accessible from:
-     http://localhost:9003/swagger/index.html
-     http://localhost:9004/swagger/index.html
+     Manchester tire workshop - http://localhost:9003/swagger/index.html
+     London tire workshop - http://localhost:9004/swagger/index.html
 ##### When running Linux
 1. Extract linux64 folder contents from downloaded release.tar.gz
 2. Run application binaries:
@@ -34,8 +34,17 @@ Choose one of the following options:
      ./manchester-server
      ```
 3. Applications should be accessible from:
-     http://localhost:9003/swagger/index.html
-     http://localhost:9004/swagger/index.html     
+     Manchester tire workshop - http://localhost:9003/swagger/index.html
+     London tire workshop - http://localhost:9004/swagger/index.html     
+#### Using Docker
+1. Run docker images
+    ```sh
+    $ docker run -d -p 9003:9003 surmus/london-tire-workshop:latest
+    $ docker run -d -p 9004:9004 surmus/manchester-tire-workshop:latest
+    ```
+2. Applications should be accessible from:
+     Manchester tire workshop - http://localhost:9003/swagger/index.html
+     London tire workshop - http://localhost:9004/swagger/index.html        
 #### Compile and install from source code
 1. Install Golang https://golang.org/
 2. Download source and compile binaries:
@@ -51,8 +60,8 @@ Choose one of the following options:
     $ ./manchester-server
     ```
 4. Applications should be accessible from:
-     http://localhost:9003/swagger/index.html
-     http://localhost:9004/swagger/index.html
+     Manchester tire workshop - http://localhost:9003/swagger/index.html
+     London tire workshop - http://localhost:9004/swagger/index.html
 
 ## CLI options
 ```sh

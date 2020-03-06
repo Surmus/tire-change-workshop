@@ -17,7 +17,7 @@ Choose one of the following options:
 
 #### Download Github release from https://github.com/Surmus/tire-change-workshop/releases
 ##### When running Windows
-1. Extract linux64 folder contents from downloaded release.tar.gz
+1. Extract win64 folder contents from downloaded release.tar.gz
 2. Run application binaries:
      ```sh
      london-server.exe
@@ -26,6 +26,16 @@ Choose one of the following options:
 3. Applications should be accessible from:
      http://localhost:9003/swagger/index.html
      http://localhost:9004/swagger/index.html
+##### When running Linux
+1. Extract linux64 folder contents from downloaded release.tar.gz
+2. Run application binaries:
+     ```sh
+     ./london-server
+     ./manchester-server
+     ```
+3. Applications should be accessible from:
+     http://localhost:9003/swagger/index.html
+     http://localhost:9004/swagger/index.html     
 #### Compile and install from source code
 1. Install Golang https://golang.org/
 2. Download source and compile binaries:

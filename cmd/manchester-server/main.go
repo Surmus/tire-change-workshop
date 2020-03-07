@@ -57,7 +57,7 @@ func initServer(c *cli.Context) error {
 func setupServer(port uint) error {
 	apiRouter := manchester.Init()
 	// The url pointing to API definition
-	swaggerURL := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", port))
+	swaggerURL := ginSwagger.URL("swagger/doc.json")
 	apiRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swaggerURL))
 	workshopServer := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),

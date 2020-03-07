@@ -55,16 +55,16 @@ func initServer(c *cli.Context) error {
 }
 
 func setupServer(port uint) error {
-	londonAPIRouter := london.Init()
+	apiRouter := london.Init()
 	// The url pointing to API definition
-	londonSwaggerURL := ginSwagger.URL(fmt.Sprintf("http://localhost:%d/swagger/doc.json", port))
-	londonAPIRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, londonSwaggerURL))
-	londonWorkshopServer := &http.Server{
+	swaggerURL := ginSwagger.URL("swagger/doc.json")
+	apiRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swaggerURL))
+	server := &http.Server{
 		Addr:         fmt.Sprintf(":%d", port),
-		Handler:      londonAPIRouter,
+		Handler:      apiRouter,
 		ReadTimeout:  5 * time.Second,
 		WriteTimeout: 10 * time.Second,
 	}
 	log.Infof("application initialized, listening to port %d", port)
-	return londonWorkshopServer.ListenAndServe()
+	return server.ListenAndServe()
 }

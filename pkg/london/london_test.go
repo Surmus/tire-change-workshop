@@ -20,8 +20,8 @@ func TestGetAvailableTireChangeTimes(t *testing.T) {
 
 	t.Run("successfully get all available for today and tomorrow in correct order", func(t *testing.T) {
 		today := time.Now().Format(rfc3339DateFormat)
-		tomorrow := time.Now().AddDate(0, 0, 1).Format(rfc3339DateFormat)
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/available?from=%s&until=%s", today, tomorrow)
+		nextWeek := time.Now().AddDate(0, 0, 7).Format(rfc3339DateFormat)
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/available?from=%s&until=%s", today, nextWeek)
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)

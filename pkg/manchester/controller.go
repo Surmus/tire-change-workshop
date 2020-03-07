@@ -43,13 +43,13 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 // @Summary Book tire change time
 // @Accept json
 // @Produce json
-// @Param uuid path integer true "available tire change time ID"
+// @Param id path integer true "available tire change time ID"
 // @Param body body tireChangeBookingRequest true "Request body"
 // @Success 200 {object} tireChangeTimeResponse
 // @Failure 400 {object} errorResponse
 // @Failure 401 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /tire-change-times/{uuid}/book [put]
+// @Router /tire-change-times/{id}/book [put]
 func (c *controller) putTireChangeBooking(ctx *gin.Context) {
 	var uri tireChangeBookingURI
 	var request tireChangeBookingRequest

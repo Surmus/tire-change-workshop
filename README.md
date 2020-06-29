@@ -2,6 +2,7 @@
 [![CircleCI](https://circleci.com/gh/Surmus/tire-change-workshop.svg?style=svg)](https://circleci.com/gh/Surmus/tire-change-workshop)
 [![codecov](https://codecov.io/gh/Surmus/tire-change-workshop/branch/master/graph/badge.svg)](https://codecov.io/gh/Surmus/tire-change-workshop)
 [![Go Report Card](https://goreportcard.com/badge/github.com/surmus/tire-change-workshop)](https://goreportcard.com/report/github.com/surmus/tire-change-workshop)
+[![Release](https://img.shields.io/github/release/surmus/tire-change-workshop.svg?style=flat-square)](https://github.com/surmus/tire-change-workshop/releases/latest)
 
 Provides tire change workshop backend API's for Tire change booking practise assigment application
 

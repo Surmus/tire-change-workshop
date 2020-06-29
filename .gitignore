@@ -8,7 +8,7 @@
 coverage.out
 tmp.out
 
-/docs
+/api/*
 /build
 
 ./london-server*

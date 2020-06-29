@@ -32,8 +32,8 @@ build_windows: deps
 .PHONY: swag
 swag: deps
 	$(GO) get -u github.com/swaggo/swag/cmd/swag
-	$(SWAGGER) init -g ../../cmd/london-server/main.go -o docs/london -d pkg/london
-	$(SWAGGER) init -g ../../cmd/manchester-server/main.go -o docs/manchester -d pkg/manchester
+	$(SWAGGER) init -g ../../cmd/london-server/main.go -o api/london -d internal/london
+	$(SWAGGER) init -g ../../cmd/manchester-server/main.go -o api/manchester -d internal/manchester
 
 .PHONY: test
 test:

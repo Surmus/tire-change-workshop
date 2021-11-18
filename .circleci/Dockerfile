@@ -1,4 +1,4 @@
-FROM golang:1.13.4
+FROM golang:1.17.2
 
 # Copied from https://github.com/CircleCI-Public/example-images/blob/master/golang/Dockerfile
 

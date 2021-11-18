@@ -8,7 +8,7 @@ import (
 
 // GinRusMiddleware returns a gin.HandlerFunc (middleware) that logs requests using logrus.
 //
-// Requests with errors are logged using logrus.Error().
+// Requests with errors are logged using logrus.Info().
 // Requests without errors are logged using logrus.Info().
 //
 // It receives:
@@ -39,7 +39,7 @@ func GinRusMiddleware(logger *log.Logger, timeFormat string, utc bool) gin.Handl
 
 		if len(c.Errors) > 0 {
 			// Append errors field if this is an erroneous request.
-			entry.Error("request failed")
+			entry.Info("request failed")
 		} else {
 			entry.Info("request handled")
 		}

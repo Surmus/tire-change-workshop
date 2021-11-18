@@ -6,15 +6,16 @@ import (
 	"github.com/surmus/tire-change-workshop/internal/manchester"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/urfave/cli"
+	"github.com/urfave/cli/v2"
 	"net/http"
 	"os"
 	"time"
 )
 
 const (
-	version        = "v1.0.1"
+	version        = "v1.1.0"
 	listenPortFlag = "port"
+	verboseFlag    = "verbose"
 	defaultPort    = 9004
 )
 
@@ -24,12 +25,17 @@ var flags = []cli.Flag{
 		Value: fmt.Sprintf("%d", defaultPort),
 		Usage: "Port for server to listen incoming connections",
 	},
+	&cli.BoolFlag{
+		Name:  verboseFlag,
+		Usage: "Enables debug messages print with SQL logging",
+	},
 }
 
 // @title Manchester tire workshop API
 // @version 1.0
 // @description Tire workshop service IOT integration.
 // @BasePath /api/v1
+// @license.name MIT
 func main() {
 	app := cli.NewApp()
 	app.Version = version
@@ -51,11 +57,17 @@ func initServer(c *cli.Context) error {
 		return fmt.Errorf("invalid server listen port supplied: %s", c.String(listenPortFlag))
 	}
 
-	return setupServer(listenToPort)
+	if c.Bool(verboseFlag) {
+		log.SetLevel(log.DebugLevel)
+	} else {
+		log.SetLevel(log.InfoLevel)
+	}
+
+	return setupServer(listenToPort, c.Bool(verboseFlag))
 }
 
-func setupServer(port uint) error {
-	apiRouter := manchester.Init()
+func setupServer(port uint, debugMode bool) error {
+	apiRouter := manchester.Init(debugMode)
 	// The url pointing to API definition
 	swaggerURL := ginSwagger.URL("swagger/doc.json")
 	apiRouter.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler, swaggerURL))

@@ -35,7 +35,13 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 		panic(validationError{err})
 	}
 
-	ctx.XML(http.StatusOK, c.service.getAvailable(query.From, query.Until))
+	availableTimes, err := c.service.getAvailable(query.From, query.Until)
+
+	if err != nil {
+		panic(err)
+	}
+
+	ctx.XML(http.StatusOK, availableTimes)
 }
 
 // putTireChangeBooking godoc
@@ -55,11 +61,15 @@ func (c *controller) putTireChangeBooking(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindUri(&uri); err != nil {
 		panic(validationError{err})
-	}
-
-	if err := ctx.ShouldBindXML(&request); err != nil {
+	} else if err := ctx.ShouldBindXML(&request); err != nil {
 		panic(validationError{err})
 	}
 
-	ctx.XML(http.StatusOK, c.service.book(uri.UUID, request.ContactInformation))
+	booking, err := c.service.book(uri.UUID, request.ContactInformation)
+
+	if err != nil {
+		panic(err)
+	}
+
+	ctx.XML(http.StatusOK, booking)
 }

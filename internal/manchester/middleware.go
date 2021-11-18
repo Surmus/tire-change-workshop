@@ -17,6 +17,7 @@ func errorHandlerMiddleware() gin.HandlerFunc {
 				log.Errorf("request failed with error %s", err.Error())
 				debug.PrintStack()
 
+			_:
 				c.Error(err)
 				c.AbortWithStatusJSON(httpStatus, errorResponse{Code: errorCode, Message: err.Error()})
 			}

@@ -15,10 +15,14 @@ var db *gorm.DB
 
 // Init initializes london application context by setting up database and registering REST endpoints,
 // returns Gin Router instance with registered endpoints
-func Init() *gin.Engine {
-	db = initDB()
+func Init(debugMode bool) *gin.Engine {
+	db = initDB(debugMode)
 	repository := newTireChangeTimeRepository(db)
 	service := newTireChangeTimesService(repository)
+
+	if !debugMode {
+		gin.SetMode(gin.ReleaseMode)
+	}
 
 	r := gin.New()
 	// Add a ginrus middleware, which:
@@ -36,14 +40,14 @@ func Init() *gin.Engine {
 	return r
 }
 
-func initDB() *gorm.DB {
+func initDB(debugMode bool) *gorm.DB {
 	db, err := gorm.Open("sqlite3", ":memory:")
 
 	if err != nil {
 		panic(err)
 	}
 
-	db.LogMode(true)
+	db.LogMode(debugMode)
 
 	runDBMigration(db)
 

@@ -16,7 +16,7 @@ import (
 const rfc3339DateFormat = "2006-01-02"
 
 func TestGetAvailableTireChangeTimes(t *testing.T) {
-	router := Init()
+	router := Init(true)
 
 	t.Run("successfully get all available for today and tomorrow in correct order", func(t *testing.T) {
 		today := time.Now().Format(rfc3339DateFormat)
@@ -34,9 +34,26 @@ func TestGetAvailableTireChangeTimes(t *testing.T) {
 		verifyTireChangeTimesResponse(t, result)
 	})
 
-	t.Run("fail with invalid query", func(t *testing.T) {
+	t.Run("fail with invalid date format", func(t *testing.T) {
 		today := time.Now().Format(rfc3339DateFormat)
 		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/available?from=%s&until=INVALID", today)
+
+		requestWriter := httptest.NewRecorder()
+		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
+		router.ServeHTTP(requestWriter, req)
+
+		result := &errorResponse{}
+		unMarshal(t, requestWriter.Body.Bytes(), result)
+
+		assert.Equal(t, http.StatusBadRequest, requestWriter.Code)
+		assert.Equal(t, http.StatusBadRequest, result.StatusCode)
+		assert.NotEmpty(t, result.Error)
+	})
+
+	t.Run("fail with invalid date period", func(t *testing.T) {
+		today := time.Now().Format(rfc3339DateFormat)
+		yesterday := time.Now().AddDate(0, 0, -1).Format(rfc3339DateFormat)
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/available?from=%s&until=%s", today, yesterday)
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
@@ -52,7 +69,7 @@ func TestGetAvailableTireChangeTimes(t *testing.T) {
 }
 
 func TestTireChangeTimeBooking(t *testing.T) {
-	router := Init()
+	router := Init(true)
 
 	t.Run("successfully book available tire change time", func(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)

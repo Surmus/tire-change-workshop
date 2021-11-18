@@ -28,14 +28,16 @@ func newTireChangeTimeEntity(changeTime time.Time, available bool) *tireChangeTi
 	}
 }
 
-func (e *tireChangeTimeEntity) makeBooking(contactInformation string) {
+func (e *tireChangeTimeEntity) makeBooking(contactInformation string) error {
 	if e == zeroTireChangeTimeEntity || !e.Available {
-		panic(newUnAvailableBookingError())
+		return newUnAvailableBookingError(e)
 	}
 
 	e.Available = false
 	e.UpdatedAt = time.Now()
 	e.BookedByContact = contactInformation
+
+	return nil
 }
 
 func (e tireChangeTimeEntity) TableName() string {

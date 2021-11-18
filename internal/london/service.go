@@ -13,22 +13,30 @@ func newTireChangeTimesService(repository *tireChangeTimeRepository) *tireChange
 	return &tireChangeTimesService{repository: repository}
 }
 
-func (s *tireChangeTimesService) getAvailable(from time.Time, until time.Time) *tireChangeTimesResponse {
+func (s *tireChangeTimesService) getAvailable(from time.Time, until time.Time) (*tireChangeTimesResponse, error) {
 	log.Infof("fetching tire change times from %s until %s", from, until)
+
+	if !from.Equal(until) && until.Before(from) {
+		return nil, newInvalidTirChangeTimesPeriodError(from, until)
+	}
 
 	tireChangeTimes := s.repository.availableByTimeRange(from, until)
 
 	log.Infof("successfully fetched %d tire change times from %s until %s", len(tireChangeTimes), from, until)
 
-	return newTireChangeTimesResponse(tireChangeTimes)
+	return newTireChangeTimesResponse(tireChangeTimes), nil
 }
 
-func (s *tireChangeTimesService) book(uuid string, contactInformation string) *tireChangeTimeResponse {
+func (s *tireChangeTimesService) book(uuid string, contactInformation string) (*tireChangeTimeResponse, error) {
 	log.Infof("trying to book tire change time with uuid: %s", uuid)
-	tireChangeTime := s.repository.availableByUUID(uuid)
-	tireChangeTime.makeBooking(contactInformation)
+	tireChangeTime := s.repository.oneByUUID(uuid)
+
+	if bookingErr := tireChangeTime.makeBooking(contactInformation); bookingErr != nil {
+		return nil, bookingErr
+	}
+
 	tireChangeTime = s.repository.save(tireChangeTime)
 
 	log.Infof("successfully booked tire change time with uuid: %s", uuid)
-	return newTireChangeTimeResponse(tireChangeTime.UUID, tireChangeTime.Time)
+	return newTireChangeTimeResponse(tireChangeTime.UUID, tireChangeTime.Time), nil
 }

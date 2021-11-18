@@ -29,12 +29,10 @@ func (r *tireChangeTimeRepository) availableByTimeRange(from time.Time, until ti
 	return results
 }
 
-func (r *tireChangeTimeRepository) availableByUUID(uuid string) *tireChangeTimeEntity {
+func (r *tireChangeTimeRepository) oneByUUID(uuid string) *tireChangeTimeEntity {
 	var result tireChangeTimeEntity
 
-	query := r.db.Model(&tireChangeTimeEntity{}).
-		Where("available = ?", true).
-		Where("uuid = ?", uuid)
+	query := r.db.Model(&tireChangeTimeEntity{}).Where("uuid = ?", uuid)
 
 	if err := query.Find(&result).Error; gorm.IsRecordNotFoundError(err) {
 		return zeroTireChangeTimeEntity

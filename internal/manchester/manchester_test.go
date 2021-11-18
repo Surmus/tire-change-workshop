@@ -15,7 +15,7 @@ import (
 const rfc3339DateFormat = "2006-01-02"
 
 func TestGetTireChangeTimes(t *testing.T) {
-	router := Init()
+	router := Init(true)
 
 	t.Run("successfully get all in correct order", func(t *testing.T) {
 		reqURL := v1Path + "/tire-change-times"
@@ -95,7 +95,7 @@ func TestGetTireChangeTimes(t *testing.T) {
 }
 
 func TestTireChangeTimeBooking(t *testing.T) {
-	router := Init()
+	router := Init(true)
 
 	t.Run("successfully book available tire change time", func(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)

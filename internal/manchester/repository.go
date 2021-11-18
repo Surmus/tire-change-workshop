@@ -35,9 +35,7 @@ func (r *tireChangeTimeRepository) allBySearchQuery(searchQuery *tireChangeTimes
 func (r *tireChangeTimeRepository) availableByID(id uint) *tireChangeTimeEntity {
 	var result tireChangeTimeEntity
 
-	query := r.db.Model(&tireChangeTimeEntity{}).
-		Where("available = ?", true).
-		Where("id = ?", id)
+	query := r.db.Model(&tireChangeTimeEntity{}).Where("id = ?", id)
 
 	if err := query.Find(&result).Error; gorm.IsRecordNotFoundError(err) {
 		return zeroTireChangeTimeEntity

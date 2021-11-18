@@ -20,12 +20,16 @@ func (s *tireChangeTimesService) get(query *tireChangeTimesSearchQuery) *tireCha
 	return newTireChangeTimesResponse(tireChangeTimes)
 }
 
-func (s *tireChangeTimesService) book(id uint, contactInformation string) *tireChangeTimeResponse {
+func (s *tireChangeTimesService) book(id uint, contactInformation string) (*tireChangeTimeResponse, error) {
 	log.Infof("trying to book tire change time with id: %d", id)
 	tireChangeTime := s.repository.availableByID(id)
-	tireChangeTime.makeBooking(contactInformation)
+
+	if bookingErr := tireChangeTime.makeBooking(contactInformation); bookingErr != nil {
+		return nil, bookingErr
+	}
+
 	tireChangeTime = s.repository.save(tireChangeTime)
 
 	log.Infof("successfully booked tire change time with id: %d", id)
-	return newTireChangeTimeResponse(tireChangeTime)
+	return newTireChangeTimeResponse(tireChangeTime), nil
 }

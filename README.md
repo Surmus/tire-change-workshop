@@ -57,9 +57,10 @@ Choose one of the following options:
     ```
 3.  Run server applications (NB: check that GOBIN env variable is set and added to the PATH)
     ```sh
-    $ ./london-server
-    $ ./manchester-server
+    $ london-server
+    $ manchester-server
     ```
+
 4. Applications should be accessible from:
      Manchester tire workshop - http://localhost:9003/swagger/index.html
      London tire workshop - http://localhost:9004/swagger/index.html
@@ -74,13 +75,14 @@ $ ./london-server help
      london-server [global options] command [command options] [arguments...]
   
   VERSION:
-     v1.0.1
+     v1.1.0
   
   COMMANDS:
      help, h  Shows a list of commands or help for one command
   
   GLOBAL OPTIONS:
      --port value, -p value  Port for server to listen incoming connections (default: "9003")
+     --verbose      Enables debug messages print with SQL logging (default: false)
      --help, -h              show help
      --version, -v           print the version
 ```
@@ -93,13 +95,14 @@ USAGE:
    manchester-server [global options] command [command options] [arguments...]
 
 VERSION:
-   v1.0.1
+   v1.1.0
 
 COMMANDS:
    help, h  Shows a list of commands or help for one command
 
 GLOBAL OPTIONS:
    --port value, -p value  Port for server to listen incoming connections (default: "9004")
+   --verbose      Enables debug messages print with SQL logging (default: false)
    --help, -h              show help
    --version, -v           print the version
 ```

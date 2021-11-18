@@ -1,5 +1,7 @@
 package manchester
 
+import "fmt"
+
 const (
 	validationErrorCode      = "11"
 	unAvailableTimeErrorCode = "22"
@@ -18,6 +20,8 @@ func newValidationError(cause error) *tireChangeApplicationError {
 	return &tireChangeApplicationError{code: validationErrorCode, error: cause.Error()}
 }
 
-func newUnAvailableBookingError() *tireChangeApplicationError {
-	return &tireChangeApplicationError{code: unAvailableTimeErrorCode, error: "tire change time is unavailable"}
+func newUnAvailableBookingError(e *tireChangeTimeEntity) *tireChangeApplicationError {
+	return &tireChangeApplicationError{
+		code:  unAvailableTimeErrorCode,
+		error: fmt.Sprintf("tire change time %d is unavailable", e.ID)}
 }

@@ -14,10 +14,8 @@ func errorHandlerMiddleware() gin.HandlerFunc {
 
 			if err, ok := r.(error); ok {
 				httpStatus := httpStatus(err)
-				log.Errorf("request failed with error %s", err.Error())
-				debug.PrintStack()
 				c.XML(httpStatus, errorResponse{StatusCode: httpStatus, Error: err.Error()})
-				c.Error(err)
+				_ = c.Error(err)
 				c.Abort()
 			}
 		}()
@@ -32,15 +30,29 @@ func httpStatus(err error) (httpStatus int) {
 	case validationError:
 		httpStatus = http.StatusBadRequest
 
+		log.Debugf("request failed with error: %v", err)
+
+		return
+
+	case invalidTireChangeTimesPeriodError:
+		httpStatus = http.StatusBadRequest
+
+		log.Debugf("request failed with error: %v", err)
+
 		return
 
 	case unAvailableBookingError:
 		httpStatus = http.StatusUnauthorized
 
+		log.Debugf("request failed with error: %v", err)
+
 		return
 
 	default:
 		httpStatus = http.StatusInternalServerError
+
+		log.Errorf("request failed with error: %v", err)
+		debug.PrintStack()
 
 		return
 	}

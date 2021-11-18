@@ -56,11 +56,15 @@ func (c *controller) putTireChangeBooking(ctx *gin.Context) {
 
 	if err := ctx.ShouldBindUri(&uri); err != nil {
 		panic(newValidationError(err))
-	}
-
-	if err := ctx.ShouldBindJSON(&request); err != nil {
+	} else if err := ctx.ShouldBindJSON(&request); err != nil {
 		panic(newValidationError(err))
 	}
 
-	ctx.JSON(http.StatusOK, c.service.book(uri.ID, request.ContactInformation))
+	response, err := c.service.book(uri.ID, request.ContactInformation)
+
+	if err != nil {
+		panic(err)
+	}
+
+	ctx.JSON(http.StatusOK, response)
 }

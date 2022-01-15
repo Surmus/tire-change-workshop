@@ -34,7 +34,7 @@ func httpStatus(err error) (httpStatus int, errorCode string) {
 			return http.StatusBadRequest, appErr.code
 
 		case unAvailableTimeErrorCode:
-			return http.StatusUnauthorized, appErr.code
+			return http.StatusForbidden, appErr.code
 		}
 	}
 

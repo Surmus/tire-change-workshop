@@ -103,7 +103,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
-		assert.Equal(t, http.StatusUnauthorized, requestWriter.Code)
+		assert.Equal(t, http.StatusForbidden, requestWriter.Code)
 	})
 
 	t.Run("fail to book unknown tire change time", func(t *testing.T) {
@@ -114,7 +114,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
-		assert.Equal(t, http.StatusUnauthorized, requestWriter.Code)
+		assert.Equal(t, http.StatusForbidden, requestWriter.Code)
 	})
 
 	t.Run("fail to book with invalid request uri", func(t *testing.T) {

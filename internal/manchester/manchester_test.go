@@ -131,7 +131,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		result := &errorResponse{}
 		unMarshal(t, requestWriter.Body.Bytes(), result)
 
-		assert.Equal(t, http.StatusUnauthorized, requestWriter.Code)
+		assert.Equal(t, http.StatusForbidden, requestWriter.Code)
 		assert.Equal(t, unAvailableTimeErrorCode, result.Code)
 		assert.NotEmpty(t, result.Message)
 	})
@@ -147,7 +147,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		result := &errorResponse{}
 		unMarshal(t, requestWriter.Body.Bytes(), result)
 
-		assert.Equal(t, http.StatusUnauthorized, requestWriter.Code)
+		assert.Equal(t, http.StatusForbidden, requestWriter.Code)
 		assert.Equal(t, unAvailableTimeErrorCode, result.Code)
 		assert.NotEmpty(t, result.Message)
 	})

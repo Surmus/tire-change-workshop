@@ -42,7 +42,7 @@ func httpStatus(err error) (httpStatus int) {
 		return
 
 	case unAvailableBookingError:
-		httpStatus = http.StatusUnauthorized
+		httpStatus = http.StatusForbidden
 
 		log.Debugf("request failed with error: %v", err)
 

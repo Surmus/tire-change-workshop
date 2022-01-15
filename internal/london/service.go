@@ -27,7 +27,7 @@ func (s *tireChangeTimesService) getAvailable(from time.Time, until time.Time) (
 	return newTireChangeTimesResponse(tireChangeTimes), nil
 }
 
-func (s *tireChangeTimesService) book(uuid string, contactInformation string) (*tireChangeTimeResponse, error) {
+func (s *tireChangeTimesService) book(uuid string, contactInformation string) (*tireChangeBookingResponse, error) {
 	log.Infof("trying to book tire change time with uuid: %s", uuid)
 	tireChangeTime := s.repository.oneByUUID(uuid)
 

@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-const v1Path = "/api/v1"
+const v2Path = "/api/v2"
 
 type controller struct {
 	service *tireChangeTimesService
@@ -14,8 +14,8 @@ type controller struct {
 func registerController(router *gin.Engine, service *tireChangeTimesService) {
 	c := &controller{service: service}
 
-	router.GET(v1Path+"/tire-change-times", c.getTireChangeTimes)
-	router.PUT(v1Path+"/tire-change-times/:id/book", c.putTireChangeBooking)
+	router.GET(v2Path+"/tire-change-times", c.getTireChangeTimes)
+	router.POST(v2Path+"/tire-change-times/:id/book", c.postTireChangeBooking)
 }
 
 // getTireChangeTimes godoc
@@ -39,18 +39,18 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, c.service.get(&query))
 }
 
-// putTireChangeBooking godoc
+// postTireChangeBooking godoc
 // @Summary Book tire change time
 // @Accept json
 // @Produce json
 // @Param id path integer true "available tire change time ID"
 // @Param body body tireChangeBookingRequest true "Request body"
-// @Success 200 {object} tireChangeTimeResponse
+// @Success 200 {object} tireChangeTimeBookingResponse
 // @Failure 400 {object} errorResponse
 // @Failure 401 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /tire-change-times/{id}/book [put]
-func (c *controller) putTireChangeBooking(ctx *gin.Context) {
+// @Router /tire-change-times/{id}/book [post]
+func (c *controller) postTireChangeBooking(ctx *gin.Context) {
 	var uri tireChangeBookingURI
 	var request tireChangeBookingRequest
 

@@ -7,21 +7,21 @@ type errorResponse struct {
 	Error      string `xml:"error"`
 }
 
-type tireChangeTimeResponse struct {
+type tireChangeBookingResponse struct {
 	UUID string    `xml:"uuid"`
 	Time time.Time `xml:"time"`
 }
 
-func newTireChangeTimeResponse(UUID string, time time.Time) *tireChangeTimeResponse {
-	return &tireChangeTimeResponse{UUID: UUID, Time: time.UTC()}
+func newTireChangeTimeResponse(UUID string, time time.Time) *tireChangeBookingResponse {
+	return &tireChangeBookingResponse{UUID: UUID, Time: time.UTC()}
 }
 
 type tireChangeTimesResponse struct {
-	AvailableTimes []*tireChangeTimeResponse `xml:"availableTime"`
+	AvailableTimes []*tireChangeBookingResponse `xml:"availableTime"`
 }
 
 func newTireChangeTimesResponse(entities []*tireChangeTimeEntity) *tireChangeTimesResponse {
-	var availableTimes []*tireChangeTimeResponse
+	var availableTimes []*tireChangeBookingResponse
 
 	for _, entity := range entities {
 		availableTimes = append(availableTimes, newTireChangeTimeResponse(entity.UUID, entity.Time))

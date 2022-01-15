@@ -15,7 +15,7 @@ func registerController(router *gin.Engine, service *tireChangeTimesService) {
 	c := &controller{service: service}
 
 	router.GET(v1Path+"/tire-change-times/available", c.getTireChangeTimes)
-	router.PUT(v1Path+"/tire-change-times/:uuid/book", c.putTireChangeBooking)
+	router.POST(v1Path+"/tire-change-times/:uuid/book", c.postTireChangeBooking)
 }
 
 // getTireChangeTimes godoc
@@ -44,18 +44,18 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 	ctx.XML(http.StatusOK, availableTimes)
 }
 
-// putTireChangeBooking godoc
+// postTireChangeBooking godoc
 // @Summary Book tire change time
 // @Accept xml
 // @Produce xml
 // @Param uuid path string true "available tire change time UUID" minlength(36) maxlength(36)
 // @Param body body tireChangeBookingRequest true "Request body"
-// @Success 200 {object} tireChangeTimeResponse
+// @Success 200 {object} tireChangeBookingResponse
 // @Failure 400 {object} errorResponse
 // @Failure 401 {object} errorResponse
 // @Failure 500 {object} errorResponse
-// @Router /tire-change-times/{uuid}/book [put]
-func (c *controller) putTireChangeBooking(ctx *gin.Context) {
+// @Router /tire-change-times/{uuid}/book [post]
+func (c *controller) postTireChangeBooking(ctx *gin.Context) {
 	var uri tireChangeBookingURI
 	var request tireChangeBookingRequest
 

@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version        = "v1.1.0"
+	version        = "v2.0.0"
 	listenPortFlag = "port"
 	verboseFlag    = "verbose"
 	defaultPort    = 9004
@@ -32,9 +32,9 @@ var flags = []cli.Flag{
 }
 
 // @title Manchester tire workshop API
-// @version 1.0
+// @version 2.0
 // @description Tire workshop service IOT integration.
-// @BasePath /api/v1
+// @BasePath /api/v2
 // @license.name MIT
 func main() {
 	app := cli.NewApp()

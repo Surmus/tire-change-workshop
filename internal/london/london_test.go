@@ -79,10 +79,10 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
-		result := &tireChangeTimeResponse{}
+		result := &tireChangeBookingResponse{}
 		unMarshal(t, requestWriter.Body.Bytes(), result)
 
 		assert.Equal(t, http.StatusOK, requestWriter.Code)
@@ -100,7 +100,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
 		assert.Equal(t, http.StatusUnauthorized, requestWriter.Code)
@@ -111,7 +111,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
 		assert.Equal(t, http.StatusUnauthorized, requestWriter.Code)
@@ -121,7 +121,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/book", "INVALID")
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, &tireChangeBookingRequest{}))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, &tireChangeBookingRequest{}))
 		router.ServeHTTP(requestWriter, req)
 
 		assert.Equal(t, http.StatusBadRequest, requestWriter.Code)
@@ -135,7 +135,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		invalidRequest := &tireChangeBookingRequest{}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, invalidRequest))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, invalidRequest))
 		router.ServeHTTP(requestWriter, req)
 
 		result := &errorResponse{}

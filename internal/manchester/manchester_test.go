@@ -18,7 +18,7 @@ func TestGetTireChangeTimes(t *testing.T) {
 	router := Init(true)
 
 	t.Run("successfully get all in correct order", func(t *testing.T) {
-		reqURL := v1Path + "/tire-change-times"
+		reqURL := v2Path + "/tire-change-times"
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
@@ -32,7 +32,7 @@ func TestGetTireChangeTimes(t *testing.T) {
 	})
 
 	t.Run("successfully get subset in correct order", func(t *testing.T) {
-		reqURL := v1Path + "/tire-change-times?amount=101&page=14"
+		reqURL := v2Path + "/tire-change-times?amount=101&page=14"
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
@@ -48,7 +48,7 @@ func TestGetTireChangeTimes(t *testing.T) {
 
 	t.Run("successfully get all from today in correct order", func(t *testing.T) {
 		today := time.Now().Format(rfc3339DateFormat)
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times?from=%s", today)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times?from=%s", today)
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
@@ -64,7 +64,7 @@ func TestGetTireChangeTimes(t *testing.T) {
 	})
 
 	t.Run("fail to get all from invalid date", func(t *testing.T) {
-		reqURL := v1Path + "/tire-change-times?from=INVALID"
+		reqURL := v2Path + "/tire-change-times?from=INVALID"
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
@@ -79,7 +79,7 @@ func TestGetTireChangeTimes(t *testing.T) {
 	})
 
 	t.Run("fail to get subset with invalid offset", func(t *testing.T) {
-		reqURL := v1Path + "/tire-change-times?amount=1&page=0"
+		reqURL := v2Path + "/tire-change-times?amount=1&page=0"
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
@@ -101,14 +101,14 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
-		result := &tireChangeTimeResponse{}
+		result := &tireChangeTimeBookingResponse{}
 		unMarshal(t, requestWriter.Body.Bytes(), result)
 
 		assert.Equal(t, http.StatusOK, requestWriter.Code)
@@ -121,11 +121,11 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), false)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
 		result := &errorResponse{}
@@ -137,11 +137,11 @@ func TestTireChangeTimeBooking(t *testing.T) {
 	})
 
 	t.Run("fail to book unknown tire change time", func(t *testing.T) {
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%d/book", 34534523423)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", 34534523423)
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
 		result := &errorResponse{}
@@ -153,10 +153,10 @@ func TestTireChangeTimeBooking(t *testing.T) {
 	})
 
 	t.Run("fail to book with invalid request uri", func(t *testing.T) {
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/book", "INVALID")
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%s/book", "INVALID")
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, &tireChangeBookingRequest{}))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, &tireChangeBookingRequest{}))
 		router.ServeHTTP(requestWriter, req)
 
 		result := &errorResponse{}
@@ -171,11 +171,11 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
 		invalidRequest := &tireChangeBookingRequest{}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, invalidRequest))
+		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, invalidRequest))
 		router.ServeHTTP(requestWriter, req)
 
 		result := &errorResponse{}

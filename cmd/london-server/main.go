@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version        = "v1.1.0"
+	version        = "v2.0.0"
 	listenPortFlag = "port"
 	verboseFlag    = "verbose"
 	defaultPort    = 9003
@@ -42,6 +42,7 @@ func main() {
 	app.Version = version
 	app.Usage = "London tire workshop API server"
 	app.Flags = flags
+
 	app.Action = initServer
 
 	err := app.Run(os.Args)

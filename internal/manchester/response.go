@@ -7,24 +7,24 @@ type errorResponse struct {
 	Message string `json:"message"`
 }
 
-type tireChangeTimeResponse struct {
+type tireChangeTimeBookingResponse struct {
 	ID        uint      `json:"id"`
 	Time      time.Time `json:"time"`
 	Available bool      `json:"available"`
 }
 
-func newTireChangeTimeResponse(entity *tireChangeTimeEntity) *tireChangeTimeResponse {
-	return &tireChangeTimeResponse{
+func newTireChangeTimeResponse(entity *tireChangeTimeEntity) *tireChangeTimeBookingResponse {
+	return &tireChangeTimeBookingResponse{
 		ID:        entity.ID,
 		Time:      entity.Time.UTC(),
 		Available: entity.Available,
 	}
 }
 
-type tireChangeTimesResponse []*tireChangeTimeResponse
+type tireChangeTimesResponse []*tireChangeTimeBookingResponse
 
 func newTireChangeTimesResponse(entities []*tireChangeTimeEntity) *tireChangeTimesResponse {
-	var availableTimes []*tireChangeTimeResponse
+	var availableTimes []*tireChangeTimeBookingResponse
 
 	for _, entity := range entities {
 		availableTimes = append(availableTimes, newTireChangeTimeResponse(entity))

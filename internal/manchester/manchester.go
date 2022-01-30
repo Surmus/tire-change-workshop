@@ -42,6 +42,7 @@ func Init(debugMode bool) *gin.Engine {
 
 func initDB(debugMode bool) *gorm.DB {
 	db, err := gorm.Open("sqlite3", ":memory:")
+	db.DB().SetMaxOpenConns(1) // Fixes possible error occurring with concurrent requests
 
 	if err != nil {
 		panic(err)

@@ -21,9 +21,10 @@ const (
 
 var flags = []cli.Flag{
 	&cli.StringFlag{
-		Name:  listenPortFlag + ", p",
-		Value: fmt.Sprintf("%d", defaultPort),
-		Usage: "Port for server to listen incoming connections",
+		Name:    listenPortFlag,
+		Aliases: []string{"p"},
+		Value:   fmt.Sprintf("%d", defaultPort),
+		Usage:   "Port for server to listen incoming connections",
 	},
 	&cli.BoolFlag{
 		Name:  verboseFlag,

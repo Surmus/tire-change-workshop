@@ -40,8 +40,8 @@ Choose one of the following options:
 #### Using Docker
 1. Run docker images
     ```sh
-    $ docker run -d -p 9003:9003 surmus/london-tire-workshop:latest
-    $ docker run -d -p 9004:9004 surmus/manchester-tire-workshop:latest
+    $ docker run -d -p 9003:80 surmus/london-tire-workshop:latest
+    $ docker run -d -p 9004:80 surmus/manchester-tire-workshop:latest
     ```
 2. Applications should be accessible from:
      Manchester tire workshop - http://localhost:9003/swagger/index.html

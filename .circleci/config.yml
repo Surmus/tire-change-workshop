@@ -78,10 +78,11 @@ jobs:
       - run:
           name: "Tag and push Docker images to registry"
           command: |
-            docker tag manchester-tire-workshop surmus/manchester-tire-workshop \
-            && docker push surmus/manchester-tire-workshop \
-            && docker tag london-tire-workshop surmus/london-tire-workshop \
-            && docker push surmus/london-tire-workshop
+            export VERSION=${CIRCLE_TAG/v/} \
+            && docker tag manchester-tire-workshop surmus/manchester-tire-workshop:${VERSION} \
+            && docker push surmus/manchester-tire-workshop:${VERSION} \
+            && docker tag london-tire-workshop surmus/london-tire-workshop:${VERSION} \
+            && docker push surmus/london-tire-workshop:${VERSION}
 
 workflows:
   version: 2

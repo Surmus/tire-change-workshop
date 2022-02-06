@@ -14,11 +14,8 @@ func errorHandlerMiddleware() gin.HandlerFunc {
 
 			if err, ok := r.(error); ok {
 				httpStatus, errorCode := httpStatus(err)
-				log.Errorf("request failed with error %s", err.Error())
-				debug.PrintStack()
 
-			_:
-				c.Error(err)
+				_ = c.Error(err)
 				c.AbortWithStatusJSON(httpStatus, errorResponse{Code: errorCode, Message: err.Error()})
 			}
 		}()
@@ -31,12 +28,17 @@ func httpStatus(err error) (httpStatus int, errorCode string) {
 	if appErr, ok := err.(*tireChangeApplicationError); ok {
 		switch appErr.code {
 		case validationErrorCode:
+			log.Infof("request encountered error: %s", err)
 			return http.StatusBadRequest, appErr.code
 
 		case unAvailableTimeErrorCode:
+			log.Infof("request encountered error: %s", err)
 			return http.StatusForbidden, appErr.code
 		}
 	}
+
+	log.Errorf("request encountered error: %s", err.Error())
+	debug.PrintStack()
 
 	return http.StatusInternalServerError, "500"
 }

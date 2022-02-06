@@ -29,29 +29,25 @@ func httpStatus(err error) (httpStatus int) {
 
 	case validationError:
 		httpStatus = http.StatusBadRequest
-
-		log.Debugf("request failed with error: %v", err)
+		log.Infof("request encountered error: %s", err)
 
 		return
 
 	case invalidTireChangeTimesPeriodError:
 		httpStatus = http.StatusBadRequest
-
-		log.Debugf("request failed with error: %v", err)
+		log.Infof("request encountered error: %s", err)
 
 		return
 
 	case unAvailableBookingError:
 		httpStatus = http.StatusForbidden
-
-		log.Debugf("request failed with error: %v", err)
+		log.Infof("request encountered error: %s", err)
 
 		return
 
 	default:
 		httpStatus = http.StatusInternalServerError
-
-		log.Errorf("request failed with error: %v", err)
+		log.Errorf("request encountered error: %+v", err)
 		debug.PrintStack()
 
 		return

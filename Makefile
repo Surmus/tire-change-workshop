@@ -11,8 +11,8 @@ all: swag test build_linux build_windows
 
 .PHONY: install
 install: swag
-	$(GO) install ./cmd/london
-	$(GO) install ./cmd/manchester
+	$(GO) install ./cmd/london-server
+	$(GO) install ./cmd/manchester-server
 
 .PHONY: build_linux
 build_linux: deps

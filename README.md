@@ -51,8 +51,8 @@ Choose one of the following options:
 1. Install Golang SDK https://golang.org/
 2. Make sure that GOPATH env variable is set or set it manually with command `export GOPATH=~/go`
 3. Run `make install`
-4. Start London server `$GOPATH/bin/london`
-5. Start Manchester server `$GOPATH/bin/manchester`
+4. Start London server `$GOPATH/bin/london-server`
+5. Start Manchester server `$GOPATH/bin/manchester-server`
 6. Applications should be accessible from:
      Manchester tire workshop - http://localhost:9003/swagger/index.html
      London tire workshop - http://localhost:9004/swagger/index.html

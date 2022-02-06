@@ -45,23 +45,15 @@ Choose one of the following options:
     ```
 2. Applications should be accessible from:
      Manchester tire workshop - http://localhost:9003/swagger/index.html
-     London tire workshop - http://localhost:9004/swagger/index.html        
-#### Compile and install from source code
-1. Install Golang https://golang.org/
-2. Download source and compile binaries:
-    ```sh
-    $ go get -u github.com/surmus/tire-change-workshop/cmd/london-server
-    ```
-    ```sh
-    $ go get -u github.com/surmus/tire-change-workshop/cmd/manchester-server
-    ```
-3.  Run server applications (NB: check that GOBIN env variable is set and added to the PATH)
-    ```sh
-    $ london-server
-    $ manchester-server
-    ```
+     London tire workshop - http://localhost:9004/swagger/index.html
 
-4. Applications should be accessible from:
+#### Build and run from source (Linux only)
+1. Install Golang SDK https://golang.org/
+2. Make sure that GOPATH env variable is set or set it manually with command `export GOPATH=~/go`
+3. Run `make install`
+4. Start London server `$GOPATH/bin/london`
+5. Start Manchester server `$GOPATH/bin/manchester`
+6. Applications should be accessible from:
      Manchester tire workshop - http://localhost:9003/swagger/index.html
      London tire workshop - http://localhost:9004/swagger/index.html
 

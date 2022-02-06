@@ -15,7 +15,7 @@ func registerController(router *gin.Engine, service *tireChangeTimesService) {
 	c := &controller{service: service}
 
 	router.GET(v2Path+"/tire-change-times", c.getTireChangeTimes)
-	router.POST(v2Path+"/tire-change-times/:id/book", c.postTireChangeBooking)
+	router.POST(v2Path+"/tire-change-times/:id/booking", c.postTireChangeBooking)
 }
 
 // getTireChangeTimes godoc
@@ -49,7 +49,7 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 // @Failure 400 {object} errorResponse
 // @Failure 422 {object} errorResponse "The tire change time has already been booked"
 // @Failure 500 {object} errorResponse
-// @Router /tire-change-times/{id}/book [post]
+// @Router /tire-change-times/{id}/booking [post]
 func (c *controller) postTireChangeBooking(ctx *gin.Context) {
 	var uri tireChangeBookingURI
 	var request tireChangeBookingRequest

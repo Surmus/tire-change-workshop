@@ -75,7 +75,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/book", availableTireChangeTime.UUID)
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", availableTireChangeTime.UUID)
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
@@ -96,8 +96,8 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), false)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/book", availableTireChangeTime.UUID)
-		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", unAvailableTireChangeTime.UUID)
+		request := &tireChangeBookingRequest{ContactInformation: "another guy"}
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
@@ -107,7 +107,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 	})
 
 	t.Run("fail to book unknown tire change time", func(t *testing.T) {
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/book", uuid.NewV4().String())
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", uuid.NewV4().String())
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
@@ -118,7 +118,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 	})
 
 	t.Run("fail to book with invalid request uri", func(t *testing.T) {
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/book", "INVALID")
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", "INVALID")
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, &tireChangeBookingRequest{}))
@@ -131,7 +131,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/book", availableTireChangeTime.UUID)
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", availableTireChangeTime.UUID)
 		invalidRequest := &tireChangeBookingRequest{}
 
 		requestWriter := httptest.NewRecorder()

@@ -101,7 +101,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/booking", availableTireChangeTime.ID)
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
@@ -121,7 +121,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), false)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/booking", availableTireChangeTime.ID)
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
@@ -137,7 +137,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 	})
 
 	t.Run("fail to book unknown tire change time", func(t *testing.T) {
-		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", 34534523423)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/booking", 34534523423)
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
@@ -153,7 +153,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 	})
 
 	t.Run("fail to book with invalid request uri", func(t *testing.T) {
-		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%s/book", "INVALID")
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%s/booking", "INVALID")
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, &tireChangeBookingRequest{}))
@@ -171,7 +171,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), true)
 		must(t, db.Create(availableTireChangeTime).Error)
 
-		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/book", availableTireChangeTime.ID)
+		reqURL := fmt.Sprintf(v2Path+"/tire-change-times/%d/booking", availableTireChangeTime.ID)
 		invalidRequest := &tireChangeBookingRequest{}
 
 		requestWriter := httptest.NewRecorder()

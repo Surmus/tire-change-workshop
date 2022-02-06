@@ -40,7 +40,7 @@ func httpStatus(err error) (httpStatus int) {
 		return
 
 	case unAvailableBookingError:
-		httpStatus = http.StatusForbidden
+		httpStatus = http.StatusUnprocessableEntity
 		log.Infof("request encountered error: %s", err)
 
 		return

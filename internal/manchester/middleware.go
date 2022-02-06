@@ -33,7 +33,7 @@ func httpStatus(err error) (httpStatus int, errorCode string) {
 
 		case unAvailableTimeErrorCode:
 			log.Infof("request encountered error: %s", err)
-			return http.StatusForbidden, appErr.code
+			return http.StatusUnprocessableEntity, appErr.code
 		}
 	}
 

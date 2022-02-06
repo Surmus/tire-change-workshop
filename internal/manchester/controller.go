@@ -47,7 +47,7 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 // @Param body body tireChangeBookingRequest true "Request body"
 // @Success 200 {object} tireChangeTimeBookingResponse
 // @Failure 400 {object} errorResponse
-// @Failure 403 {object} errorResponse
+// @Failure 422 {object} errorResponse "The tire change time has already been booked"
 // @Failure 500 {object} errorResponse
 // @Router /tire-change-times/{id}/book [post]
 func (c *controller) postTireChangeBooking(ctx *gin.Context) {

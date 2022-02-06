@@ -32,7 +32,7 @@ func newTireChangeTimeEntity(changeTime time.Time, available bool) *tireChangeTi
 }
 
 func (e *tireChangeTimeEntity) makeBooking(contactInformation string) error {
-	if e == zeroTireChangeTimeEntity || !e.Available {
+	if e == zeroTireChangeTimeEntity || (!e.Available && e.BookedByContact != contactInformation) {
 		return newUnAvailableBookingError(e)
 	}
 

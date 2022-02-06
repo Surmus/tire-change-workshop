@@ -15,7 +15,7 @@ func registerController(router *gin.Engine, service *tireChangeTimesService) {
 	c := &controller{service: service}
 
 	router.GET(v1Path+"/tire-change-times/available", c.getTireChangeTimes)
-	router.POST(v1Path+"/tire-change-times/:uuid/book", c.postTireChangeBooking)
+	router.PUT(v1Path+"/tire-change-times/:uuid/booking", c.putTireChangeBooking)
 }
 
 // getTireChangeTimes godoc
@@ -44,7 +44,7 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 	ctx.XML(http.StatusOK, availableTimes)
 }
 
-// postTireChangeBooking godoc
+// putTireChangeBooking godoc
 // @Summary Book tire change time
 // @Accept xml
 // @Produce xml
@@ -54,8 +54,8 @@ func (c *controller) getTireChangeTimes(ctx *gin.Context) {
 // @Failure 400 {object} errorResponse
 // @Failure 422 {object} errorResponse "The tire change time has already been booked by another contact"
 // @Failure 500 {object} errorResponse
-// @Router /tire-change-times/{uuid}/booking [post]
-func (c *controller) postTireChangeBooking(ctx *gin.Context) {
+// @Router /tire-change-times/{uuid}/booking [put]
+func (c *controller) putTireChangeBooking(ctx *gin.Context) {
 	var uri tireChangeBookingURI
 	var request tireChangeBookingRequest
 

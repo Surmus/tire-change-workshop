@@ -79,7 +79,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
 		result := &tireChangeBookingResponse{}
@@ -92,15 +92,32 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		assert.False(t, getTireChangeTime(t, availableTireChangeTime.UUID).Available)
 	})
 
+	t.Run("successfully update already booked change time for same contact", func(t *testing.T) {
+		contactInformation := "TEST"
+		bookedTireChangeTime := newTireChangeTimeEntity(time.Now(), false)
+		bookedTireChangeTime.BookedByContact = contactInformation
+		must(t, db.Create(bookedTireChangeTime).Error)
+
+		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", bookedTireChangeTime.UUID)
+		request := &tireChangeBookingRequest{ContactInformation: contactInformation}
+
+		requestWriter := httptest.NewRecorder()
+		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
+		router.ServeHTTP(requestWriter, req)
+
+		assert.Equal(t, http.StatusOK, requestWriter.Code)
+	})
+
 	t.Run("fail to book unavailable tire change time", func(t *testing.T) {
-		availableTireChangeTime := newTireChangeTimeEntity(time.Now(), false)
-		must(t, db.Create(availableTireChangeTime).Error)
+		unAvailableTireChangeTime := newTireChangeTimeEntity(time.Now(), false)
+		unAvailableTireChangeTime.BookedByContact = "some guy"
+		must(t, db.Create(unAvailableTireChangeTime).Error)
 
 		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", unAvailableTireChangeTime.UUID)
 		request := &tireChangeBookingRequest{ContactInformation: "another guy"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
 		assert.Equal(t, http.StatusUnprocessableEntity, requestWriter.Code)
@@ -111,7 +128,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		request := &tireChangeBookingRequest{ContactInformation: "TEST"}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, request))
+		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, request))
 		router.ServeHTTP(requestWriter, req)
 
 		assert.Equal(t, http.StatusUnprocessableEntity, requestWriter.Code)
@@ -121,7 +138,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		reqURL := fmt.Sprintf(v1Path+"/tire-change-times/%s/booking", "INVALID")
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, &tireChangeBookingRequest{}))
+		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, &tireChangeBookingRequest{}))
 		router.ServeHTTP(requestWriter, req)
 
 		assert.Equal(t, http.StatusBadRequest, requestWriter.Code)
@@ -135,7 +152,7 @@ func TestTireChangeTimeBooking(t *testing.T) {
 		invalidRequest := &tireChangeBookingRequest{}
 
 		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodPost, reqURL, marshal(t, invalidRequest))
+		req, _ := http.NewRequest(http.MethodPut, reqURL, marshal(t, invalidRequest))
 		router.ServeHTTP(requestWriter, req)
 
 		result := &errorResponse{}

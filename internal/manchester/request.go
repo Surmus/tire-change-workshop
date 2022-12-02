@@ -4,7 +4,7 @@ import "time"
 
 type tireChangeTimesSearchQuery struct {
 	Amount uint      `form:"amount"`
-	Page   uint      `form:"page" binding:"required_with=Amount"`
+	Page   uint      `form:"page"`
 	From   time.Time `form:"from" time_format:"2006-01-02"`
 }
 

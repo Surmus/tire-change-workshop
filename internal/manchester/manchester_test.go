@@ -46,6 +46,21 @@ func TestGetTireChangeTimes(t *testing.T) {
 		verifyTireChangeTimesResponse(t, *result)
 	})
 
+	t.Run("successfully get limited amount", func(t *testing.T) {
+		reqURL := v2Path + "/tire-change-times?amount=1"
+
+		requestWriter := httptest.NewRecorder()
+		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
+		router.ServeHTTP(requestWriter, req)
+
+		result := &tireChangeTimesResponse{}
+		unMarshal(t, requestWriter.Body.Bytes(), result)
+
+		assert.Equal(t, http.StatusOK, requestWriter.Code)
+		assert.Len(t, *result, 1)
+		verifyTireChangeTimesResponse(t, *result)
+	})
+
 	t.Run("successfully get all from today in correct order", func(t *testing.T) {
 		today := time.Now().Format(rfc3339DateFormat)
 		reqURL := fmt.Sprintf(v2Path+"/tire-change-times?from=%s", today)
@@ -65,21 +80,6 @@ func TestGetTireChangeTimes(t *testing.T) {
 
 	t.Run("fail to get all from invalid date", func(t *testing.T) {
 		reqURL := v2Path + "/tire-change-times?from=INVALID"
-
-		requestWriter := httptest.NewRecorder()
-		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)
-		router.ServeHTTP(requestWriter, req)
-
-		result := &errorResponse{}
-		unMarshal(t, requestWriter.Body.Bytes(), result)
-
-		assert.Equal(t, http.StatusBadRequest, requestWriter.Code)
-		assert.Equal(t, validationErrorCode, result.Code)
-		assert.NotEmpty(t, result.Message)
-	})
-
-	t.Run("fail to get subset with invalid offset", func(t *testing.T) {
-		reqURL := v2Path + "/tire-change-times?amount=1&page=0"
 
 		requestWriter := httptest.NewRecorder()
 		req, _ := http.NewRequest(http.MethodGet, reqURL, nil)

@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	version        = "v2.0.0"
+	version        = "v2.0.1"
 	listenPortFlag = "port"
 	verboseFlag    = "verbose"
 	defaultPort    = 9003
